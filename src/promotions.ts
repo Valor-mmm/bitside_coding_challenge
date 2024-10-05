@@ -1,8 +1,14 @@
 import {ArticleID, inventory} from "./inventory.ts";
 import {BasketItem} from "./basket.ts";
 
-type ApplyPromotion = (basketItem: BasketItem) => number;
+export type ApplyPromotion = (basketItem: BasketItem) => number;
 
+/**
+ * Reduces the price by the reduction provided:
+ * e.g.:
+ *
+ * reduction: 0.1 && price: 10 -> reduced price: 9
+ * */
 const getReductionPromotion = (reduction: number): ApplyPromotion => (basketItem) => {
     const inventoryPrice = inventory[basketItem.articleID]
 
@@ -11,7 +17,7 @@ const getReductionPromotion = (reduction: number): ApplyPromotion => (basketItem
        return 0
     }
 
-    return (inventoryPrice * reduction) * basketItem.quantity
+    return (inventoryPrice * (1 - reduction)) * basketItem.quantity
 }
 
 /**
@@ -31,7 +37,7 @@ const getTwoForOnePromotion = (): ApplyPromotion => (basketItem) => {
 
     const totalPrice = inventoryPrice * basketItem.quantity
 
-    if (basketItem.quantity > 2) {
+    if (basketItem.quantity >= 2) {
         return totalPrice - inventoryPrice
     }
     return totalPrice
