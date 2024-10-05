@@ -1,4 +1,5 @@
-import {ArticleID} from "./inventory.ts";
+import {ArticleID, inventory} from "./inventory.ts";
+import {promotions} from "./promotions.ts";
 
 export interface BasketItem {
     articleID: ArticleID;
@@ -14,6 +15,7 @@ export class Basket {
 
     public printItems(): void {
         console.group(`Items in basket with ID "${this.id}"`)
+        console.log(`Total basket value: ${this.total()}`)
         console.table(this.items);
         console.groupEnd();
     }
@@ -29,5 +31,23 @@ export class Basket {
         } else {
             this.items.push({articleID: itemId, quantity: 1});
         }
+    }
+
+    public total(): number {
+        return this.items.reduce((accumulator, currentValue) => {
+            const promotionFn = promotions[currentValue.articleID]
+
+            if (promotionFn) {
+                return accumulator + promotionFn(currentValue)
+            }
+
+            const inventoryPrice = inventory[currentValue.articleID]
+
+            if (typeof inventoryPrice !== "number") {
+                // handle error: no result in inventory list
+                return accumulator
+            }
+            return accumulator + inventoryPrice * currentValue.quantity
+        }, 0)
     }
 }

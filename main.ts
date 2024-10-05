@@ -4,7 +4,11 @@ import { Basket } from "./src/basket.ts";
 if (import.meta.main) {
   const basket = new Basket(1)
   basket.scan('A0001')
+  basket.scan('A0001')
   basket.scan('A0002')
   basket.scan('A0002')
+  basket.scan('A0003')
+
   basket.printItems()
+
 }
