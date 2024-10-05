@@ -14,9 +14,20 @@ export class Basket {
     }
 
     public printItems(): void {
+        const detailItems = this.items.map(item => {
+
+            const promotion = promotions[item.articleID]
+
+            return {
+            ...item,
+            pricePerItem: inventory[item.articleID],
+            priceSum: inventory[item.articleID] * item.quantity,
+            reducedPrice: typeof promotion === "function" ? promotion(item) : NaN,
+        }})
+
         console.group(`Items in basket with ID "${this.id}"`)
         console.log(`Total basket value: ${this.total()}`)
-        console.table(this.items);
+        console.table(detailItems);
         console.groupEnd();
     }
 

@@ -43,7 +43,7 @@ const getTwoForOnePromotion = (): ApplyPromotion => (basketItem) => {
     return totalPrice
 }
 
-export const promotions: Record<ArticleID, ApplyPromotion | undefined> = {
+export const promotions: Partial<Record<ArticleID, ApplyPromotion>> = {
     'A0001': getReductionPromotion(0.1),
     'A0002': getTwoForOnePromotion()
 }

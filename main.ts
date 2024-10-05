@@ -9,6 +9,7 @@ if (import.meta.main) {
   basket.scan('A0002')
   basket.scan('A0003')
 
+  // Prints the basket and
   basket.printItems()
 
 }
